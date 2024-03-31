@@ -12,7 +12,7 @@ from utils.utils import *
 # def model_assembler(input, model_json, interpreter):
 
 
-def model_assembler(interpreter, json_path='./ObfusedModel.json', free_unused_data=True, enable_sig=True):
+def model_assembler(interpreter, json_path='./ObfusedModel.json', free_unused_data=True, enable_sig=True, executable=False):
     with open(json_path,'r') as f:
         model_json_f = f.read()
     model_json = json.loads(model_json_f)
@@ -100,7 +100,8 @@ def model_assembler(interpreter, json_path='./ObfusedModel.json', free_unused_da
                                 out_id_list.remove(removal_list[m])
                             break
                 output_id = output_id[:1]
-                print(' return %s;' % (get_inout_string(output_id)))
+                if not executable:
+                    print(' return %s;' % (get_inout_string(output_id)))
             if 'const Eigen::ThreadPoolDevice' in line:
                 if enable_sig:
                     print(' const Eigen::ThreadPoolDevice* device = tflite::eigen_support::CreateThreadPoolDevice(-1);')
@@ -113,4 +114,3 @@ def model_assembler(interpreter, json_path='./ObfusedModel.json', free_unused_da
                     print('extern \"C\" const float* coder(int *input_v) {')
             else:
                 print(line, end="")
-
