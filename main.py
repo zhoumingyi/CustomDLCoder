@@ -15,7 +15,8 @@ from dinamic_config import dinamic_config
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_name', type=str, default='lenet', help='name of the model')
-parser.add_argument('--free_unused_data', type=bool, help='free unused intermediate data')
+parser.add_argument('--free_unused_data', action='store_true', help='free unused intermediate data')
+parser.add_argument('--executable', action='store_true', help='generate executable file')
 opt = parser.parse_args()
 
 def reduce_size_json(json_file):
@@ -139,7 +140,6 @@ file = open('./obfjson/model' + '_' + opt.model_name + '.json', 'w')
 file.write(jsondata)
 file.close()
 
-model_assembler(interpreter, './obfjson/model' + '_' + opt.model_name + '.json', opt.free_unused_data, enable_sig=enable_sig)
-dinamic_config(unknown_config, './obfjson/model' + '_' + opt.model_name + '.json', os.path.join(model_path, model_name), enable_sig=enable_sig)
+model_assembler(interpreter, './obfjson/model' + '_' + opt.model_name + '.json', opt.free_unused_data, enable_sig=enable_sig, executable=opt.executable)
+dinamic_config(unknown_config, './obfjson/model' + '_' + opt.model_name + '.json', os.path.join(model_path, model_name), enable_sig=enable_sig, executable=opt.executable)
 os.system('python eval.py --model_name=' + opt.model_name + ' --latency=True')
-
