@@ -126,7 +126,7 @@ cmake --build . -j && cd ..
 Then, test our method on SqueezeNet model. You can also change the test model (e.g., set '--model_name=fruit' to use the fruit.tflite model in the 'tflite_model' folder). All models are compatible with the baseline (the provided tflite cmake project).
 
 ```
-python main.py --free_unused_data=True --model_name=squeezenet
+python main.py --model_name=squeezenet --free_unused_data
 ```
 
 If you want to maintain the intermediate data, you can unset the "--free_unused_data" (it will speed up the inference and saving the memory if it is True):
@@ -152,7 +152,7 @@ cmake --build . -j && cd ..
 Next, run:
 
 ```
-python main.py --free_unused_data=True --model_name=gpt2
+python main.py --model_name=gpt2 --free_unused_data
 ```
 
 Note that testing on GPT2 needs a machine with large RAM (RAM size smaller than 64 Gb may cause termination of compilation). 
